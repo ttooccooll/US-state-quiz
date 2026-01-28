@@ -24,6 +24,10 @@ body {
   background: var(--charcoal);
 }
 
+button {
+  color: var(--charcoal);
+}
+
 #map {
   width: 100%;
   height: 100vh;
