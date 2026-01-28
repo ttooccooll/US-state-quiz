@@ -473,6 +473,6 @@ body {
     padding: 1px 0px 1px 0px;
   }
   #map {
-    transform: scale(2);
+    transform: scale(1.5);
   }
 }
