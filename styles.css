@@ -475,8 +475,6 @@ button {
   .leaflet-popup-close-button {
     font-size: 8px;
     padding: 1px 0px 1px 0px;
-    position: absolute;
-    top: -5px;
   }
   #map {
     transform: scale(2);
