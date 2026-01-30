@@ -316,12 +316,12 @@ button {
   background: var(--green);
   border: 2px solid var(--greenb);
   color: white;
-  box-shadow: 0 0 14px rgba(31, 122, 79, 0.7);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.7);
 }
 
 #enableLightningBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 22px rgba(31, 122, 79, 0.9);
+  box-shadow: 0 0 22px rgba(218, 249, 255, 0.9);
 }
 
 /* Skip button */
