@@ -311,7 +311,6 @@ button {
     background 0.2s;
 }
 
-/* Enable rewards button */
 #enableLightningBtn {
   background: var(--green);
   border: 2px solid var(--greenb);
@@ -324,7 +323,6 @@ button {
   box-shadow: 0 0 22px rgba(218, 249, 255, 0.9);
 }
 
-/* Skip button */
 #skipLightningBtn {
   background: var(--red);
   border: 2px solid var(--redb);
@@ -337,7 +335,6 @@ button {
   box-shadow: 0 0 22px rgba(158, 42, 44, 0.85);
 }
 
-/* Pulse animation */
 @keyframes lightningModalPulse {
   0%,
   100% {
