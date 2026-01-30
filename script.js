@@ -146,7 +146,7 @@ map.on("click", function (e) {
     score = Math.max(0, score - 1);
     streak = 0;
     scoreEl.textContent = `Score: ${score} | Streak: ${streak}`;
-    messageEl.textContent = `❌ Wrong! Try again.`;
+    messageEl.textContent = `Nope. Try again.`;
 
     const wrongCircle = L.circle([e.latlng.lat, e.latlng.lng], {
       radius: 30000,
