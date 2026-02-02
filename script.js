@@ -77,15 +77,15 @@ let remainingCountries = [...states];
 
 let currentCountry = null;
 const tolerancePerCountry = {
-  "Texas": 6,
-  "California": 5,
-  "Montana": 4,
-  "Florida": 4,
+  Texas: 6,
+  California: 5,
+  Montana: 4,
+  Florida: 4,
   "Rhode Island": 1.2,
-  "Delaware": 1.2,
+  Delaware: 1.2,
   "New Jersey": 1.2,
-  "Connecticut": 1.2,
-  "Massachusetts": 1.2,
+  Connecticut: 1.2,
+  Massachusetts: 1.2,
 };
 
 const scoreEl = document.getElementById("score");
@@ -238,8 +238,8 @@ const capitalModeBtn = document.getElementById("capitalModeBtn");
 const faqPopup = document.getElementById("faqPopup");
 const paymentsPopup = document.getElementById("paymentsPopup");
 
-document.querySelectorAll(".closePopup").forEach(btn => {
-  btn.addEventListener("click", e => {
+document.querySelectorAll(".closePopup").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
     e.target.closest(".popup").classList.add("hidden");
   });
 });
@@ -257,29 +257,130 @@ paymentsBtn.addEventListener("click", () => {
 let capitalMode = false;
 capitalModeBtn.addEventListener("click", () => {
   capitalMode = !capitalMode;
-  capitalModeBtn.textContent = capitalMode ? "🏛️ Capital Mode ON" : "🏛️ Capital Mode";
+  capitalModeBtn.textContent = capitalMode
+    ? "🏛️ Capital Mode ON"
+    : "🏛️ Capital Mode";
 });
-
 
 async function getInvoiceFromLightningAddress(address, sats) {
   const [name, domain] = address.split("@");
   const lnurlpUrl = `https://${domain}/.well-known/lnurlp/${name}`;
 
-  const lnurlpRes = await fetch(lnurlpUrl).then(r => r.json());
+  const lnurlpRes = await fetch(lnurlpUrl).then((r) => r.json());
 
   const callback = lnurlpRes.callback;
   const msats = sats * 1000;
 
-  const invoiceRes = await fetch(`${callback}?amount=${msats}`).then(r => r.json());
+  const invoiceRes = await fetch(`${callback}?amount=${msats}`).then((r) =>
+    r.json(),
+  );
 
   return invoiceRes.pr;
 }
+
+const hoverGlow = L.circle([0, 0], {
+  radius: 120000,
+  color: "#ccc",
+  weight: 1,
+  fillColor: "#ccc",
+  fillOpacity: 0,
+  opacity: 0,
+  interactive: false,
+}).addTo(map);
+
+map.on("mousemove", function (e) {
+  let nearest = null;
+  let nearestDist = Infinity;
+
+  for (const country of states) {
+    const dx = e.latlng.lat - country.lat;
+    const dy = e.latlng.lng - country.lng;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < nearestDist) {
+      nearestDist = dist;
+      nearest = country;
+    }
+  }
+
+  const maxHoverDist = 6;
+
+  if (nearest && nearestDist < maxHoverDist) {
+    const intensity = 1 - nearestDist / maxHoverDist;
+
+    hoverGlow.setLatLng([nearest.lat, nearest.lng]);
+    hoverGlow.setRadius(stateGlowRadius[nearest.name] || 150000);
+    hoverGlow.setStyle({
+      opacity: intensity * 0.4,
+      fillOpacity: intensity * 0.4,
+    });
+  } else {
+    hoverGlow.setStyle({
+      opacity: 0,
+      fillOpacity: 0,
+    });
+  }
+});
+
+const stateGlowRadius = {
+  Alabama: 120000,
+  Alaska: 400000,
+  Arizona: 250000,
+  Arkansas: 150000,
+  California: 300000,
+  Colorado: 220000,
+  Connecticut: 90000,
+  Delaware: 70000,
+  Florida: 200000,
+  Georgia: 150000,
+  Hawaii: 120000,
+  Idaho: 200000,
+  Illinois: 200000,
+  Indiana: 150000,
+  Iowa: 150000,
+  Kansas: 180000,
+  Kentucky: 150000,
+  Louisiana: 130000,
+  Maine: 150000,
+  Maryland: 120000,
+  Massachusetts: 120000,
+  Michigan: 200000,
+  Minnesota: 200000,
+  Mississippi: 120000,
+  Missouri: 180000,
+  Montana: 300000,
+  Nebraska: 180000,
+  Nevada: 250000,
+  "New Hampshire": 90000,
+  "New Jersey": 90000,
+  "New Mexico": 220000,
+  "New York": 220000,
+  "North Carolina": 180000,
+  "North Dakota": 180000,
+  Ohio: 180000,
+  Oklahoma: 180000,
+  Oregon: 220000,
+  Pennsylvania: 180000,
+  "Rhode Island": 50000,
+  "South Carolina": 150000,
+  "South Dakota": 180000,
+  Tennessee: 150000,
+  Texas: 400000,
+  Utah: 200000,
+  Vermont: 60000,
+  Virginia: 150000,
+  Washington: 200000,
+  "West Virginia": 100000,
+  Wisconsin: 180000,
+  Wyoming: 180000,
+};
 
 function showEndScreen() {
   const endScreen = document.getElementById("endScreen");
   const finalStats = document.getElementById("finalStats");
 
-  const accuracy = totalClicks > 0 ? Math.round((score / totalClicks) * 100) : 0;
+  const accuracy =
+    totalClicks > 0 ? Math.round((score / totalClicks) * 100) : 0;
 
   finalStats.innerHTML = `
     <strong>Final Score:</strong> ${score}<br>
